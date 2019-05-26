@@ -1,0 +1,19 @@
+<span [ngSwitch]="type">
+  <input *ngSwitchCase="'string'"
+         type="text" value="{{result}}" #inputElement
+         (keyup.enter)="get_input(inputElement.value)"
+         (blur)="get_input(inputElement.value)">
+         <!-- (blur)="get_input(inputElement.value)" -->
+  <input *ngSwitchCase="'number'"
+         type="number" value="{{result}}" #inputElement
+         (keyup.enter)="get_input(str2num(inputElement.value))"
+         (blur)="get_input(str2num(inputElement.value))">
+         <!-- (blur)="get_input(inputElement.value)" -->
+  <input *ngSwitchCase="'boolean'"
+         type="checkbox" [(ngModel)]="result"
+         (ngModelChange)="get_input(result)">
+  <span *ngSwitchCase="'undefined'" (blur)="get_input(undefined)"></span>
+  <!-- (blur)="get_input(undefined)" -->
+  <app-form *ngSwitchCase="'object'" [default]="result" (getInput)="get_input($event)"></app-form>
+  <app-form *ngSwitchDefault [default]="result" (getInput)="get_input($event)"></app-form>
+  </span>

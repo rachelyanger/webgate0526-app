@@ -1,0 +1,101 @@
+<div *ngIf="result != undefined" style="padding-left: 20px;">
+  <li *ngFor="let key of getKeys(result)">
+    <ng-container [ngSwitch]="getType(result.input_type(key))">
+      <span>{{ key }}:</span>
+      <span *ngSwitchCase="'[object String]'">
+        <span *ngIf="result.input_type(key) == 'VariableArr'">
+          <!--<input>-->
+          <button (click)="add(key); test($event)">添加</button>
+          <div *ngFor="let element of result[key].value; let i = index">
+            <app-input-form
+              [type]="result[key].type"
+              [default]="element"
+              (getInput)="update(key, $event, i)"
+            ></app-input-form>
+            <button (click)="delete(key, i)">删除</button>
+          </div>
+        </span>
+        <app-input-form
+          *ngIf="result.input_type(key) != 'VariableArr'"
+          [type]="result.input_type(key)"
+          [default]="result[key]"
+          (getInput)="result[key] = $event; get_input(result)"
+        ></app-input-form>
+      </span>
+
+      <span *ngSwitchCase="'[object Array]'">
+        <span *ngFor="let element of result.input_type(key); let i = index">
+          <app-input-form
+            [type]="element"
+            [default]="result[key][i]"
+            (getInput)="result[key][i] = $event; get_input(result)"
+          ></app-input-form>
+        </span>
+      </span>
+      <span *ngSwitchCase="'[object Object]'">
+        <select
+          [(ngModel)]="result[key]"
+          (ngModelChange)="result.choose_subclass(); get_input(result)"
+        >
+          <option
+            *ngFor="let element of getSubclass(result.input_type(key))"
+            value="{{ element }}"
+            >{{ element }}</option
+          >
+        </select>
+      </span>
+    </ng-container>
+  </li>
+</div>
+
+<!-- <br />
+<div *ngIf="result != undefined" style="padding-left: 20px;">
+  <ng-container
+    *ngFor="let key of getKeys(result)"
+    [ngSwitch]="getType(result.input_type(key))"
+  >
+    <label>{{ key }}:</label>
+    <ng-container *ngSwitchCase="'[object String]'">
+      <ng-container *ngIf="result.input_type(key) == 'VariableArr'">
+        <button (click)="add(key); test($event)">添加</button>
+        <span *ngFor="let element of result[key].value; let i = index">
+          <app-input-form
+            [type]="result[key].type"
+            [default]="element"
+            (getInput)="update(key, $event, i)"
+          ></app-input-form>
+          <button (click)="delete(key, i)">删除</button>
+        </span>
+      </ng-container>
+      <app-input-form
+        *ngIf="result.input_type(key) != 'VariableArr'"
+        [type]="result.input_type(key)"
+        [default]="result[key]"
+        (getInput)="result[key] = $event; get_input(result)"
+      ></app-input-form>
+    </ng-container>
+
+    <span *ngSwitchCase="'[object Array]'">
+      <span *ngFor="let element of result.input_type(key); let i = index">
+        <app-input-form
+          [type]="element"
+          [default]="result[key][i]"
+          (getInput)="result[key][i] = $event; get_input(result)"
+        ></app-input-form>
+      </span>
+    </span>
+    <span *ngSwitchCase="'[object Object]'">
+      <select
+        [(ngModel)]="result[key]"
+        (ngModelChange)="result.choose_subclass(); get_input(result)"
+      >
+        <option
+          *ngFor="let element of getSubclass(result.input_type(key))"
+          value="{{ element }}"
+          >{{ element }}</option
+        >
+      </select>
+    </span>
+  </ng-container>
+</div>
+<p>{{ result | json }}</p> -->

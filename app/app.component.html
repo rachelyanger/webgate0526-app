@@ -1,0 +1,17 @@
+<!-- <li>aaa
+     <label>bbb
+        <input type="text"/>
+        <input type="text"/>
+     </label>
+
+  <input type="text" />
+  <input type="text" />
+</li> -->
+
+<app-form [default]="a" (getInput)="geometry=$event"></app-form>
+<p></p>
+<app-form [default]="b" (getInput)="placement=$event"></app-form>
+<p></p>
+<app-form [default]="c" (getInput)="repeater=$event"></app-form>
+<p></p>
+<app-test [mygeometry]='geometry' [myplacement] = 'placement' [myrepeater] = 'repeater'></app-test>
